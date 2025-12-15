@@ -18,30 +18,20 @@ interface QueryResult {
   error?: string;
 }
 
-interface SingleJoin {
+interface JoinState {
+  enabled: boolean;
   table: string;
   on: string;
   select: string;
   type: 'left' | 'inner' | 'right';
 }
 
-interface JoinsState {
-  count: 0 | 1 | 2;
-  joins: [SingleJoin, SingleJoin];
-}
-
-interface ExampleJoins {
-  count: 0 | 1 | 2;
-  joins?: [Partial<SingleJoin>, Partial<SingleJoin>?];
-}
-
-const EXAMPLE_QUERIES: { label: string; value: string; joinConfig: ExampleJoins }[] = [
-  { label: 'All users', value: 'db-users', joinConfig: { count: 0 } },
-  { label: 'User names', value: 'db-users-name-limit-10', joinConfig: { count: 0 } },
-  { label: 'Products by price', value: 'db-products-title-orderby-price-desc-limit-5', joinConfig: { count: 0 } },
-  { label: 'Users + Posts', value: 'db-users-name-limit-5', joinConfig: { count: 1, joins: [{ table: 'posts', on: 'id-author_id', select: 'title', type: 'left' }] } },
-  { label: 'Posts + Authors', value: 'db-posts-title-limit-5', joinConfig: { count: 1, joins: [{ table: 'users', on: 'author_id-id', select: 'name', type: 'left' }] } },
-  { label: 'Posts + User + Role', value: 'db-posts-title-limit-5', joinConfig: { count: 2, joins: [{ table: 'users', on: 'author_id-id', select: 'name', type: 'left' }, { table: 'users', on: 'author_id-id', select: 'role', type: 'left' }] } },
+const EXAMPLE_QUERIES = [
+  { label: 'All users', value: 'db-users', join: null },
+  { label: 'User names', value: 'db-users-name-limit-10', join: null },
+  { label: 'Products by price', value: 'db-products-title-orderby-price-desc-limit-5', join: null },
+  { label: 'Users + Posts', value: 'db-users-name-limit-5', join: { table: 'posts', on: 'id-author_id', select: 'title', type: 'left' as const } },
+  { label: 'Posts + Authors', value: 'db-posts-title-limit-5', join: { table: 'users', on: 'author_id-id', select: 'name', type: 'left' as const } },
 ];
 
 const AS_OPTIONS = ['table', 'list', 'json'] as const;
@@ -49,22 +39,23 @@ type AsOption = typeof AS_OPTIONS[number];
 
 const JOIN_TYPES = ['left', 'inner', 'right'] as const;
 
-const DEFAULT_JOINS: [SingleJoin, SingleJoin] = [
-  { table: 'posts', on: 'id-author_id', select: 'title', type: 'left' },
-  { table: 'users', on: 'author_id-id', select: 'role', type: 'left' },
-];
+const ITEMS_PER_PAGE = 20;
 
 export function Playground() {
   const [className, setClassName] = useState('db-users-name-limit-5');
   const [result, setResult] = useState<QueryResult | null>(null);
   const [loading, setLoading] = useState(false);
   const [renderAs, setRenderAs] = useState<AsOption>('table');
-  const [joinsState, setJoinsState] = useState<JoinsState>({
-    count: 0,
-    joins: DEFAULT_JOINS,
+  const [currentPage, setCurrentPage] = useState(1);
+  const [join, setJoin] = useState<JoinState>({
+    enabled: false,
+    table: 'posts',
+    on: 'id-author_id',
+    select: 'title',
+    type: 'left',
   });
 
-  const fetchData = useCallback(async (query: string, joins: JoinsState) => {
+  const fetchData = useCallback(async (query: string, joinConfig: JoinState) => {
     if (!query.startsWith('db-')) {
       setResult({ error: 'Query must start with "db-"' });
       return;
@@ -74,13 +65,10 @@ export function Playground() {
     try {
       let url = `/api/query?className=${encodeURIComponent(query)}`;
       
-      // Add join parameters if enabled
-      for (let i = 0; i < joins.count; i++) {
-        const j = joins.joins[i];
-        if (j.table) {
-          const joinParam = `${j.table}:${j.on}:${j.select}:${j.type}`;
-          url += `&join=${encodeURIComponent(joinParam)}`;
-        }
+      // Add join parameter if enabled
+      if (joinConfig.enabled && joinConfig.table) {
+        const joinParam = `${joinConfig.table}:${joinConfig.on}:${joinConfig.select}:${joinConfig.type}`;
+        url += `&join=${encodeURIComponent(joinParam)}`;
       }
       
       const response = await fetch(url);
@@ -93,46 +81,35 @@ export function Playground() {
     }
   }, []);
 
-  // Debounced fetch on className or joins change
+  // Debounced fetch on className or join change
   useEffect(() => {
     const timer = setTimeout(() => {
       if (className) {
-        fetchData(className, joinsState);
+        fetchData(className, join);
       }
     }, 300);
 
     return () => clearTimeout(timer);
-  }, [className, joinsState, fetchData]);
+  }, [className, join, fetchData]);
+
+  // Reset to page 1 when results change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [result?.results]);
 
   const applyExample = (example: typeof EXAMPLE_QUERIES[0]) => {
     setClassName(example.value);
-    const jc = example.joinConfig;
-    if (jc.count > 0 && jc.joins) {
-      const newJoins: [SingleJoin, SingleJoin] = [...DEFAULT_JOINS];
-      jc.joins.forEach((j, i) => {
-        if (j && i < 2) {
-          newJoins[i] = { ...DEFAULT_JOINS[i], ...j };
-        }
+    if (example.join) {
+      setJoin({
+        enabled: true,
+        table: example.join.table,
+        on: example.join.on,
+        select: example.join.select,
+        type: example.join.type,
       });
-      setJoinsState({ count: jc.count, joins: newJoins });
     } else {
-      setJoinsState(prev => ({ ...prev, count: 0 }));
+      setJoin(prev => ({ ...prev, enabled: false }));
     }
-  };
-
-  const updateJoin = (index: 0 | 1, updates: Partial<SingleJoin>) => {
-    setJoinsState(prev => {
-      const newJoins: [SingleJoin, SingleJoin] = [...prev.joins];
-      newJoins[index] = { ...newJoins[index], ...updates };
-      return { ...prev, joins: newJoins };
-    });
-  };
-
-  const toggleJoinCount = () => {
-    setJoinsState(prev => ({
-      ...prev,
-      count: ((prev.count + 1) % 3) as 0 | 1 | 2,
-    }));
   };
 
   const renderResults = () => {
@@ -154,126 +131,135 @@ export function Playground() {
       );
     }
 
+    // Calculate pagination
+    const totalItems = result.results.length;
+    const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    const endIndex = startIndex + ITEMS_PER_PAGE;
+    const paginatedResults = result.results.slice(startIndex, endIndex);
+
     const headers = Object.keys(result.results[0]);
 
     switch (renderAs) {
       case 'json':
         return (
-          <pre className="bg-black/40 text-green-400 p-4 rounded-lg overflow-x-auto text-sm font-mono">
-            {JSON.stringify(result.results, null, 2)}
-          </pre>
+          <>
+            <pre className="bg-black/40 text-green-400 p-4 rounded-lg overflow-x-auto text-sm font-mono">
+              {JSON.stringify(paginatedResults, null, 2)}
+            </pre>
+            {totalPages > 1 && (
+              <div className="mt-4 flex items-center justify-center gap-2">
+                <button
+                  onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                  disabled={currentPage === 1}
+                  className="px-3 py-1.5 rounded-lg text-xs font-medium transition-all bg-white/5 text-slate-400 border border-white/10 hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  ← Prev
+                </button>
+                <span className="text-xs text-slate-500">
+                  Page {currentPage} of {totalPages}
+                </span>
+                <button
+                  onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                  disabled={currentPage === totalPages}
+                  className="px-3 py-1.5 rounded-lg text-xs font-medium transition-all bg-white/5 text-slate-400 border border-white/10 hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Next →
+                </button>
+              </div>
+            )}
+          </>
         );
 
       case 'list':
         return (
-          <ul className="space-y-2">
-            {result.results.map((row, i) => (
-              <li key={i} className="bg-white/5 rounded-lg p-3 text-slate-300">
-                {headers.length === 1 
-                  ? String(row[headers[0]])
-                  : headers.map(h => `${h}: ${row[h]}`).join(' • ')
-                }
-              </li>
-            ))}
-          </ul>
+          <>
+            <ul className="space-y-2">
+              {paginatedResults.map((row, i) => (
+                <li key={startIndex + i} className="bg-white/5 rounded-lg p-3 text-slate-300">
+                  {headers.length === 1 
+                    ? String(row[headers[0]])
+                    : headers.map(h => `${h}: ${row[h]}`).join(' • ')
+                  }
+                </li>
+              ))}
+            </ul>
+            {totalPages > 1 && (
+              <div className="mt-4 flex items-center justify-center gap-2">
+                <button
+                  onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                  disabled={currentPage === 1}
+                  className="px-3 py-1.5 rounded-lg text-xs font-medium transition-all bg-white/5 text-slate-400 border border-white/10 hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  ← Prev
+                </button>
+                <span className="text-xs text-slate-500">
+                  Page {currentPage} of {totalPages}
+                </span>
+                <button
+                  onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                  disabled={currentPage === totalPages}
+                  className="px-3 py-1.5 rounded-lg text-xs font-medium transition-all bg-white/5 text-slate-400 border border-white/10 hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Next →
+                </button>
+              </div>
+            )}
+          </>
         );
 
       case 'table':
       default:
         return (
-          <div className="overflow-x-auto">
-            <table className="w-full border-collapse text-sm">
-              <thead>
-                <tr className="bg-white/5">
-                  {headers.map((h) => (
-                    <th key={h} className="border border-white/10 px-3 py-2 text-left font-semibold text-cyan-400">
-                      {h}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {result.results.map((row, i) => (
-                  <tr key={i} className="hover:bg-white/5 transition-colors">
+          <>
+            <div className="overflow-x-auto">
+              <table className="w-full border-collapse text-sm">
+                <thead>
+                  <tr className="bg-white/5">
                     {headers.map((h) => (
-                      <td key={h} className="border border-white/10 px-3 py-2 text-slate-300">
-                        {String(row[h] ?? '')}
-                      </td>
+                      <th key={h} className="border border-white/10 px-3 py-2 text-left font-semibold text-cyan-400">
+                        {h}
+                      </th>
                     ))}
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {paginatedResults.map((row, i) => (
+                    <tr key={startIndex + i} className="hover:bg-white/5 transition-colors">
+                      {headers.map((h) => (
+                        <td key={h} className="border border-white/10 px-3 py-2 text-slate-300">
+                          {String(row[h] ?? '')}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            {totalPages > 1 && (
+              <div className="mt-4 flex items-center justify-center gap-2">
+                <button
+                  onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                  disabled={currentPage === 1}
+                  className="px-3 py-1.5 rounded-lg text-xs font-medium transition-all bg-white/5 text-slate-400 border border-white/10 hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  ← Prev
+                </button>
+                <span className="text-xs text-slate-500">
+                  Page {currentPage} of {totalPages} ({startIndex + 1}-{Math.min(endIndex, totalItems)} of {totalItems})
+                </span>
+                <button
+                  onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                  disabled={currentPage === totalPages}
+                  className="px-3 py-1.5 rounded-lg text-xs font-medium transition-all bg-white/5 text-slate-400 border border-white/10 hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Next →
+                </button>
+              </div>
+            )}
+          </>
         );
     }
-  };
-
-  const renderJoinComponent = (index: 0 | 1) => {
-    const join = joinsState.joins[index];
-    return (
-      <div key={index} className="flex flex-wrap items-center gap-1 ml-4 mt-2">
-        <span className="text-purple-400">&lt;Join</span>
-        
-        {/* table prop */}
-        <span className="text-cyan-400 ml-2">table</span>
-        <span className="text-white">=</span>
-        <span className="text-green-400">&quot;</span>
-        <input
-          type="text"
-          value={join.table}
-          onChange={(e) => updateJoin(index, { table: e.target.value })}
-          className="bg-transparent text-green-400 outline-none border-b border-green-400/30 focus:border-green-400 transition-colors w-20"
-          placeholder="posts"
-        />
-        <span className="text-green-400">&quot;</span>
-        
-        {/* on prop */}
-        <span className="text-cyan-400 ml-2">on</span>
-        <span className="text-white">=</span>
-        <span className="text-yellow-400">&quot;</span>
-        <input
-          type="text"
-          value={join.on}
-          onChange={(e) => updateJoin(index, { on: e.target.value })}
-          className="bg-transparent text-yellow-400 outline-none border-b border-yellow-400/30 focus:border-yellow-400 transition-colors w-28"
-          placeholder="id-author_id"
-        />
-        <span className="text-yellow-400">&quot;</span>
-        
-        {/* select prop */}
-        <span className="text-cyan-400 ml-2">select</span>
-        <span className="text-white">=</span>
-        <span className="text-green-400">&quot;</span>
-        <input
-          type="text"
-          value={join.select}
-          onChange={(e) => updateJoin(index, { select: e.target.value })}
-          className="bg-transparent text-green-400 outline-none border-b border-green-400/30 focus:border-green-400 transition-colors w-20"
-          placeholder="title"
-        />
-        <span className="text-green-400">&quot;</span>
-        
-        {/* type prop */}
-        <span className="text-cyan-400 ml-2">type</span>
-        <span className="text-white">=</span>
-        <span className="text-orange-400">&quot;</span>
-        <select
-          value={join.type}
-          onChange={(e) => updateJoin(index, { type: e.target.value as 'left' | 'inner' | 'right' })}
-          className="bg-transparent text-orange-400 outline-none border-b border-orange-400/30 focus:border-orange-400 cursor-pointer"
-        >
-          {JOIN_TYPES.map((type) => (
-            <option key={type} value={type} className="bg-slate-900 text-orange-400">
-              {type}
-            </option>
-          ))}
-        </select>
-        <span className="text-orange-400">&quot;</span>
-        
-        <span className="text-purple-400 ml-1">/&gt;</span>
-      </div>
-    );
   };
 
   return (
@@ -293,9 +279,9 @@ export function Playground() {
               type="text"
               value={className}
               onChange={(e) => setClassName(e.target.value)}
-              className="bg-transparent text-green-400 outline-none border-b border-green-400/30 focus:border-green-400 transition-colors min-w-[180px] md:min-w-[280px]"
+              className="bg-transparent text-green-400 outline-none border-b border-green-400/30 focus:border-green-400 transition-colors"
               placeholder="db-users-name"
-              style={{ width: `${Math.max(180, className.length * 9)}px` }}
+              style={{ width: `${Math.max(12, className.length + 1)}ch` }}
             />
             <span className="text-green-400">&quot;</span>
             
@@ -316,32 +302,95 @@ export function Playground() {
             </select>
             <span className="text-orange-400">&quot;</span>
             
-            <span className="text-pink-400 ml-1">{joinsState.count > 0 ? '>' : '/>'}</span>
+            <span className="text-pink-400 ml-1">{join.enabled ? '>' : '/>'}</span>
           </div>
           
-          {/* Join Components (if enabled) */}
-          {joinsState.count >= 1 && renderJoinComponent(0)}
-          {joinsState.count >= 2 && renderJoinComponent(1)}
-          
-          {joinsState.count > 0 && (
-            <div className="flex items-center gap-1 mt-2">
-              <span className="text-pink-400">&lt;/DB&gt;</span>
-            </div>
+          {/* Join Component (if enabled) */}
+          {join.enabled && (
+            <>
+              <div className="flex flex-wrap items-center gap-1 ml-4 mt-2">
+                <span className="text-purple-400">&lt;Join</span>
+                
+                {/* table prop */}
+                <span className="text-cyan-400 ml-2">table</span>
+                <span className="text-white">=</span>
+                <span className="text-green-400">&quot;</span>
+                <input
+                  type="text"
+                  value={join.table}
+                  onChange={(e) => setJoin(prev => ({ ...prev, table: e.target.value }))}
+                  className="bg-transparent text-green-400 outline-none border-b border-green-400/30 focus:border-green-400 transition-colors"
+                  placeholder="posts"
+                  style={{ width: `${Math.max(5, join.table.length + 1)}ch` }}
+                />
+                <span className="text-green-400">&quot;</span>
+                
+                {/* on prop */}
+                <span className="text-cyan-400 ml-2">on</span>
+                <span className="text-white">=</span>
+                <span className="text-yellow-400">&quot;</span>
+                <input
+                  type="text"
+                  value={join.on}
+                  onChange={(e) => setJoin(prev => ({ ...prev, on: e.target.value }))}
+                  className="bg-transparent text-yellow-400 outline-none border-b border-yellow-400/30 focus:border-yellow-400 transition-colors"
+                  placeholder="id-author_id"
+                  style={{ width: `${Math.max(10, join.on.length + 1)}ch` }}
+                />
+                <span className="text-yellow-400">&quot;</span>
+                
+                {/* select prop */}
+                <span className="text-cyan-400 ml-2">select</span>
+                <span className="text-white">=</span>
+                <span className="text-green-400">&quot;</span>
+                <input
+                  type="text"
+                  value={join.select}
+                  onChange={(e) => setJoin(prev => ({ ...prev, select: e.target.value }))}
+                  className="bg-transparent text-green-400 outline-none border-b border-green-400/30 focus:border-green-400 transition-colors"
+                  placeholder="title"
+                  style={{ width: `${Math.max(5, join.select.length + 1)}ch` }}
+                />
+                <span className="text-green-400">&quot;</span>
+                
+                {/* type prop */}
+                <span className="text-cyan-400 ml-2">type</span>
+                <span className="text-white">=</span>
+                <span className="text-orange-400">&quot;</span>
+                <select
+                  value={join.type}
+                  onChange={(e) => setJoin(prev => ({ ...prev, type: e.target.value as 'left' | 'inner' | 'right' }))}
+                  className="bg-transparent text-orange-400 outline-none border-b border-orange-400/30 focus:border-orange-400 cursor-pointer"
+                >
+                  {JOIN_TYPES.map((type) => (
+                    <option key={type} value={type} className="bg-slate-900 text-orange-400">
+                      {type}
+                    </option>
+                  ))}
+                </select>
+                <span className="text-orange-400">&quot;</span>
+                
+                <span className="text-purple-400 ml-1">/&gt;</span>
+              </div>
+              <div className="flex items-center gap-1 mt-2">
+                <span className="text-pink-400">&lt;/DB&gt;</span>
+              </div>
+            </>
           )}
         </div>
 
         {/* Join Toggle & Quick Examples */}
         <div className="flex flex-wrap items-center gap-3">
           <button
-            onClick={toggleJoinCount}
+            onClick={() => setJoin(prev => ({ ...prev, enabled: !prev.enabled }))}
             className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-2 ${
-              joinsState.count > 0
+              join.enabled
                 ? 'bg-purple-500/20 text-purple-400 border border-purple-500/30'
                 : 'bg-white/5 text-slate-400 border border-white/10 hover:bg-white/10'
             }`}
           >
-            <span>{joinsState.count === 0 ? '+' : joinsState.count === 1 ? '++' : '−'}</span>
-            <span>Join{joinsState.count === 2 ? 's' : ''} ({joinsState.count})</span>
+            <span>{join.enabled ? '−' : '+'}</span>
+            <span>Join</span>
           </button>
           
           <div className="h-4 w-px bg-white/10" />
@@ -352,7 +401,7 @@ export function Playground() {
               key={example.label}
               onClick={() => applyExample(example)}
               className={`px-3 py-1 rounded-full text-xs font-mono transition-all ${
-                className === example.value && example.joinConfig.count === joinsState.count
+                className === example.value && (example.join ? join.enabled : !join.enabled)
                   ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/30'
                   : 'bg-white/5 text-slate-400 border border-white/10 hover:bg-white/10 hover:text-slate-300'
               }`}
@@ -380,6 +429,11 @@ export function Playground() {
       {result?.count !== undefined && !result.error && (
         <div className="text-xs text-slate-500">
           {result.count} result{result.count !== 1 ? 's' : ''}
+          {result.count > ITEMS_PER_PAGE && (
+            <span className="ml-2">
+              (showing {ITEMS_PER_PAGE} per page)
+            </span>
+          )}
         </div>
       )}
 

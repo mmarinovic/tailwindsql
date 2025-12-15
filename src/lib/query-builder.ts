@@ -29,14 +29,6 @@ export function buildQuery(config: QueryConfig): BuiltQuery {
   const table = sanitizeIdentifier(config.table);
   const hasJoins = config.joins && config.joins.length > 0;
   
-  // Create aliases for joins (j0, j1, etc.) to handle multiple joins to same table
-  const joinAliases: string[] = [];
-  if (config.joins) {
-    config.joins.forEach((_, i) => {
-      joinAliases.push(`j${i}`);
-    });
-  }
-  
   // Build SELECT clause
   let selectColumns: string[] = [];
   
@@ -51,20 +43,18 @@ export function buildQuery(config: QueryConfig): BuiltQuery {
     selectColumns = hasJoins ? [`${table}.*`] : ['*'];
   }
   
-  // Add columns from joins with aliases
+  // Add columns from joins
   if (config.joins) {
-    config.joins.forEach((join, i) => {
-      const alias = joinAliases[i];
+    for (const join of config.joins) {
+      const joinTable = sanitizeIdentifier(join.table);
       if (join.columns.length > 0) {
         for (const col of join.columns) {
-          const sanitizedCol = sanitizeIdentifier(col);
-          // Use alias in select and give a unique column name to avoid conflicts
-          selectColumns.push(`${alias}.${sanitizedCol} AS ${join.table}_${sanitizedCol}`);
+          selectColumns.push(`${joinTable}.${sanitizeIdentifier(col)}`);
         }
       } else {
-        selectColumns.push(`${alias}.*`);
+        selectColumns.push(`${joinTable}.*`);
       }
-    });
+    }
   }
   
   const columns = selectColumns.join(', ');
@@ -72,16 +62,15 @@ export function buildQuery(config: QueryConfig): BuiltQuery {
   // Start building the query
   let sql = `SELECT ${columns} FROM ${table}`;
   
-  // Build JOIN clauses with aliases
+  // Build JOIN clauses
   if (config.joins) {
-    config.joins.forEach((join, i) => {
+    for (const join of config.joins) {
       const joinTable = sanitizeIdentifier(join.table);
-      const alias = joinAliases[i];
       const parentCol = sanitizeIdentifier(join.parentColumn);
       const childCol = sanitizeIdentifier(join.childColumn);
       
-      sql += ` ${join.type} JOIN ${joinTable} AS ${alias} ON ${table}.${parentCol} = ${alias}.${childCol}`;
-    });
+      sql += ` ${join.type} JOIN ${joinTable} ON ${table}.${parentCol} = ${joinTable}.${childCol}`;
+    }
   }
   
   // Build WHERE clause

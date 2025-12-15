@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   keywords: ['SQL', 'TailwindCSS', 'React', 'Server Components', 'SQLite', 'database', 'queries', 'Next.js'],
   authors: [{ name: 'TailwindSQL' }],
   creator: 'TailwindSQL',
-  metadataBase: new URL('https://tailwindsql.dev'),
+  metadataBase: new URL('https://tailwindsql.xyz'),
   openGraph: {
     title: 'TailwindSQL - SQL Queries with Tailwind Syntax',
     description: 'Like TailwindCSS, but for SQL queries. className your way to database queries in React Server Components!',

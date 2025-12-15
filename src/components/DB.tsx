@@ -52,7 +52,7 @@ function parseJoinChild(props: JoinProps): JoinConfig {
   };
 }
 
-export async function DB({ className, as = 'span', style, children }: DBProps) {
+export async function DB({ className, as = 'span', style, children }: DBProps): Promise<JSX.Element> {
   // Parse the className to extract query config
   const config = parseClassNames(className);
   
@@ -110,7 +110,7 @@ function renderResults(
   columns: string[],
   as: RenderAs,
   style?: React.CSSProperties
-): ReactNode {
+): JSX.Element {
   if (results.length === 0) {
     return (
       <span className="text-gray-400 italic" style={style}>

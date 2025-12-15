@@ -31,36 +31,28 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  // Parse join parameters if provided (supports multiple joins)
-  const joinParams = searchParams.getAll('join');
-  if (joinParams.length > 0) {
-    const joins: JoinConfig[] = [];
+  // Parse join parameter if provided
+  const joinParam = searchParams.get('join');
+  if (joinParam) {
+    const joinParts = joinParam.split(':');
     
-    for (const joinParam of joinParams) {
-      const joinParts = joinParam.split(':');
+    if (joinParts.length >= 2) {
+      const [table, onClause, selectCols, joinType] = joinParts;
+      const [parentCol, childCol] = (onClause || 'id-id').split('-');
       
-      if (joinParts.length >= 2) {
-        const [table, onClause, selectCols, joinType] = joinParts;
-        const [parentCol, childCol] = (onClause || 'id-id').split('-');
-        
-        const typeMap: Record<string, 'INNER' | 'LEFT' | 'RIGHT'> = {
-          inner: 'INNER',
-          left: 'LEFT',
-          right: 'RIGHT',
-        };
-        
-        joins.push({
-          table: table,
-          parentColumn: parentCol || 'id',
-          childColumn: childCol || `${table}_id`,
-          columns: selectCols ? selectCols.split(',').map(c => c.trim()) : [],
-          type: typeMap[joinType || 'left'] || 'LEFT',
-        });
-      }
-    }
-    
-    if (joins.length > 0) {
-      config.joins = joins;
+      const typeMap: Record<string, 'INNER' | 'LEFT' | 'RIGHT'> = {
+        inner: 'INNER',
+        left: 'LEFT',
+        right: 'RIGHT',
+      };
+      
+      config.joins = [{
+        table: table,
+        parentColumn: parentCol || 'id',
+        childColumn: childCol || `${table}_id`,
+        columns: selectCols ? selectCols.split(',').map(c => c.trim()) : [],
+        type: typeMap[joinType || 'left'] || 'LEFT',
+      }];
     }
   }
 
