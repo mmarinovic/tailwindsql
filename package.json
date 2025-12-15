@@ -5,9 +5,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "npm run seed:check && next build",
     "start": "next start",
-    "seed": "tsx src/seed.ts"
+    "seed": "tsx src/seed.ts",
+    "seed:check": "node scripts/check-db.js"
   },
   "dependencies": {
     "better-sqlite3": "^11.6.0",
