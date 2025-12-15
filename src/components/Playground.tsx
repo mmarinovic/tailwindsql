@@ -39,7 +39,7 @@ type AsOption = typeof AS_OPTIONS[number];
 
 const JOIN_TYPES = ['left', 'inner', 'right'] as const;
 
-const ITEMS_PER_PAGE = 20;
+const ITEMS_PER_PAGE = 10;
 
 export function Playground() {
   const [className, setClassName] = useState('db-users-name-limit-5');
@@ -148,23 +148,23 @@ export function Playground() {
               {JSON.stringify(paginatedResults, null, 2)}
             </pre>
             {totalPages > 1 && (
-              <div className="mt-4 flex flex-col sm:flex-row items-center justify-center gap-2">
+              <div className="mt-4 flex flex-row items-center justify-center gap-2">
                 <button
                   onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
                   disabled={currentPage === 1}
-                  className="px-3 py-1.5 rounded-lg text-xs font-medium transition-all bg-white/5 text-slate-400 border border-white/10 hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+                  className="px-2 sm:px-3 py-1.5 rounded-lg text-xs font-medium transition-all bg-white/5 text-slate-400 border border-white/10 hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
                 >
-                  ← Prev
+                  ←
                 </button>
                 <span className="text-xs text-slate-500">
-                  Page {currentPage} of {totalPages}
+                  {currentPage}/{totalPages}
                 </span>
                 <button
                   onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
                   disabled={currentPage === totalPages}
-                  className="px-3 py-1.5 rounded-lg text-xs font-medium transition-all bg-white/5 text-slate-400 border border-white/10 hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+                  className="px-2 sm:px-3 py-1.5 rounded-lg text-xs font-medium transition-all bg-white/5 text-slate-400 border border-white/10 hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
                 >
-                  Next →
+                  →
                 </button>
               </div>
             )}
@@ -185,23 +185,23 @@ export function Playground() {
               ))}
             </ul>
             {totalPages > 1 && (
-              <div className="mt-4 flex flex-col sm:flex-row items-center justify-center gap-2">
+              <div className="mt-4 flex flex-row items-center justify-center gap-2">
                 <button
                   onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
                   disabled={currentPage === 1}
-                  className="px-3 py-1.5 rounded-lg text-xs font-medium transition-all bg-white/5 text-slate-400 border border-white/10 hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+                  className="px-2 sm:px-3 py-1.5 rounded-lg text-xs font-medium transition-all bg-white/5 text-slate-400 border border-white/10 hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
                 >
-                  ← Prev
+                  ←
                 </button>
                 <span className="text-xs text-slate-500">
-                  Page {currentPage} of {totalPages}
+                  {currentPage}/{totalPages}
                 </span>
                 <button
                   onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
                   disabled={currentPage === totalPages}
-                  className="px-3 py-1.5 rounded-lg text-xs font-medium transition-all bg-white/5 text-slate-400 border border-white/10 hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+                  className="px-2 sm:px-3 py-1.5 rounded-lg text-xs font-medium transition-all bg-white/5 text-slate-400 border border-white/10 hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
                 >
-                  Next →
+                  →
                 </button>
               </div>
             )}
@@ -237,24 +237,24 @@ export function Playground() {
               </table>
             </div>
             {totalPages > 1 && (
-              <div className="mt-4 flex flex-col sm:flex-row items-center justify-center gap-2">
+              <div className="mt-4 flex flex-row items-center justify-center gap-2">
                 <button
                   onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
                   disabled={currentPage === 1}
-                  className="px-3 py-1.5 rounded-lg text-xs font-medium transition-all bg-white/5 text-slate-400 border border-white/10 hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+                  className="px-2 sm:px-3 py-1.5 rounded-lg text-xs font-medium transition-all bg-white/5 text-slate-400 border border-white/10 hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
                 >
-                  ← Prev
+                  ←
                 </button>
                 <span className="text-xs text-slate-500 text-center">
-                  Page {currentPage} of {totalPages}
+                  {currentPage}/{totalPages}
                   <span className="hidden sm:inline"> ({startIndex + 1}-{Math.min(endIndex, totalItems)} of {totalItems})</span>
                 </span>
                 <button
                   onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
                   disabled={currentPage === totalPages}
-                  className="px-3 py-1.5 rounded-lg text-xs font-medium transition-all bg-white/5 text-slate-400 border border-white/10 hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+                  className="px-2 sm:px-3 py-1.5 rounded-lg text-xs font-medium transition-all bg-white/5 text-slate-400 border border-white/10 hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
                 >
-                  Next →
+                  →
                 </button>
               </div>
             )}
