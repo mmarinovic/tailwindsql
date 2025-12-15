@@ -269,11 +269,11 @@ export function Playground() {
       <div className="space-y-3 sm:space-y-4">
         <div className="bg-black/50 border border-white/20 rounded-xl p-3 sm:p-4 font-mono text-xs sm:text-sm md:text-base overflow-x-auto">
           {/* DB Component */}
-          <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-2">
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
             <span className="text-pink-400">&lt;DB</span>
             
             {/* className prop */}
-            <div className="flex items-center gap-1 pl-4 sm:pl-0">
+            <span className="flex items-center gap-1">
               <span className="text-cyan-400">className</span>
               <span className="text-white">=</span>
               <span className="text-green-400">&quot;</span>
@@ -281,15 +281,15 @@ export function Playground() {
                 type="text"
                 value={className}
                 onChange={(e) => setClassName(e.target.value)}
-                className="bg-transparent text-green-400 outline-none border-b border-green-400/30 focus:border-green-400 transition-colors min-w-[8ch] max-w-full flex-1"
+                className="bg-transparent text-green-400 outline-none border-b border-green-400/30 focus:border-green-400 transition-colors min-w-[8ch] max-w-full"
                 placeholder="db-users-name"
                 style={{ width: `${Math.max(12, Math.min(className.length + 1, 30))}ch` }}
               />
               <span className="text-green-400">&quot;</span>
-            </div>
+            </span>
             
             {/* as prop */}
-            <div className="flex items-center gap-1 pl-4 sm:pl-0">
+            <span className="flex items-center gap-1">
               <span className="text-cyan-400">as</span>
               <span className="text-white">=</span>
               <span className="text-orange-400">&quot;</span>
@@ -305,7 +305,7 @@ export function Playground() {
                 ))}
               </select>
               <span className="text-orange-400">&quot;</span>
-            </div>
+            </span>
             
             <span className="text-pink-400">{join.enabled ? '>' : '/>'}</span>
           </div>
@@ -313,11 +313,11 @@ export function Playground() {
           {/* Join Component (if enabled) */}
           {join.enabled && (
             <>
-              <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-2 pl-4 mt-1">
+              <div className="flex flex-wrap items-center gap-x-2 gap-y-1 pl-4 mt-1">
                 <span className="text-purple-400">&lt;Join</span>
                 
                 {/* table prop */}
-                <div className="flex items-center gap-1 pl-4 sm:pl-0">
+                <span className="flex items-center gap-1">
                   <span className="text-cyan-400">table</span>
                   <span className="text-white">=</span>
                   <span className="text-green-400">&quot;</span>
@@ -330,10 +330,10 @@ export function Playground() {
                     style={{ width: `${Math.max(5, Math.min(join.table.length + 1, 15))}ch` }}
                   />
                   <span className="text-green-400">&quot;</span>
-                </div>
+                </span>
                 
                 {/* on prop */}
-                <div className="flex items-center gap-1 pl-4 sm:pl-0">
+                <span className="flex items-center gap-1">
                   <span className="text-cyan-400">on</span>
                   <span className="text-white">=</span>
                   <span className="text-yellow-400">&quot;</span>
@@ -346,10 +346,10 @@ export function Playground() {
                     style={{ width: `${Math.max(10, Math.min(join.on.length + 1, 20))}ch` }}
                   />
                   <span className="text-yellow-400">&quot;</span>
-                </div>
+                </span>
                 
                 {/* select prop */}
-                <div className="flex items-center gap-1 pl-4 sm:pl-0">
+                <span className="flex items-center gap-1">
                   <span className="text-cyan-400">select</span>
                   <span className="text-white">=</span>
                   <span className="text-green-400">&quot;</span>
@@ -362,10 +362,10 @@ export function Playground() {
                     style={{ width: `${Math.max(5, Math.min(join.select.length + 1, 15))}ch` }}
                   />
                   <span className="text-green-400">&quot;</span>
-                </div>
+                </span>
                 
                 {/* type prop */}
-                <div className="flex items-center gap-1 pl-4 sm:pl-0">
+                <span className="flex items-center gap-1">
                   <span className="text-cyan-400">type</span>
                   <span className="text-white">=</span>
                   <span className="text-orange-400">&quot;</span>
@@ -381,7 +381,7 @@ export function Playground() {
                     ))}
                   </select>
                   <span className="text-orange-400">&quot;</span>
-                </div>
+                </span>
                 
                 <span className="text-purple-400">/&gt;</span>
               </div>

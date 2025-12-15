@@ -36,19 +36,19 @@ export function Example({ title, description, className, as, children, codePrevi
         {/* Code block */}
         <div className="mb-3 sm:mb-4 overflow-x-auto rounded-lg bg-black/50 p-3 sm:p-4 font-mono text-xs sm:text-sm">
           {codePreview || (
-            <div className="flex flex-col sm:flex-row sm:flex-wrap sm:gap-x-1">
+            <div className="flex flex-wrap items-baseline gap-x-1">
               <span className="text-pink-400">&lt;DB</span>
-              <div className="pl-4 sm:pl-1">
+              <span>
                 <span className="text-slate-300">className=</span>
                 <span className="text-green-400">&quot;{className}&quot;</span>
-              </div>
+              </span>
               {as && (
-                <div className="pl-4 sm:pl-0">
+                <span>
                   <span className="text-slate-300">as=</span>
                   <span className="text-green-400">&quot;{as}&quot;</span>
-                </div>
+                </span>
               )}
-              <span className="text-pink-400 sm:pl-1">/&gt;</span>
+              <span className="text-pink-400">/&gt;</span>
             </div>
           )}
         </div>
@@ -146,34 +146,34 @@ export function JoinExample() {
       codePreview={
         <div className="flex flex-col">
           {/* DB opening tag with props */}
-          <div className="flex flex-col sm:flex-row sm:flex-wrap sm:gap-x-1">
+          <div className="flex flex-wrap items-baseline gap-x-1">
             <span className="text-pink-400">&lt;DB</span>
-            <div className="pl-4 sm:pl-1">
+            <span>
               <span className="text-slate-300">className=</span>
               <span className="text-green-400">&quot;db-users-name-limit-5&quot;</span>
-            </div>
-            <div className="pl-4 sm:pl-0">
+            </span>
+            <span>
               <span className="text-slate-300">as=</span>
               <span className="text-green-400">&quot;table&quot;</span>
-            </div>
-            <span className="text-pink-400 sm:pl-1">&gt;</span>
+            </span>
+            <span className="text-pink-400">&gt;</span>
           </div>
           {/* Join component with props */}
-          <div className="flex flex-col sm:flex-row sm:flex-wrap sm:gap-x-1 pl-4">
+          <div className="flex flex-wrap items-baseline gap-x-1 pl-4">
             <span className="text-purple-400">&lt;Join</span>
-            <div className="pl-4 sm:pl-1">
+            <span>
               <span className="text-slate-300">table=</span>
               <span className="text-green-400">&quot;posts&quot;</span>
-            </div>
-            <div className="pl-4 sm:pl-0">
+            </span>
+            <span>
               <span className="text-slate-300">on=</span>
               <span className="text-yellow-400">&quot;id-author_id&quot;</span>
-            </div>
-            <div className="pl-4 sm:pl-0">
+            </span>
+            <span>
               <span className="text-slate-300">select=</span>
               <span className="text-green-400">&quot;title&quot;</span>
-            </div>
-            <span className="text-purple-400 sm:pl-1">/&gt;</span>
+            </span>
+            <span className="text-purple-400">/&gt;</span>
           </div>
           {/* DB closing tag */}
           <span className="text-pink-400">&lt;/DB&gt;</span>

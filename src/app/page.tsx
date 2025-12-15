@@ -49,13 +49,13 @@ export default function Home() {
           {/* Hero Example */}
           <div className="glow-card p-4 sm:p-6 md:p-8 max-w-2xl mx-auto text-left">
             <div className="code-block text-xs sm:text-sm md:text-base overflow-x-auto">
-              <div className="font-mono flex flex-col sm:flex-row sm:flex-wrap sm:gap-x-1">
+              <div className="font-mono flex flex-wrap items-baseline gap-x-1">
                 <span className="token-tag">&lt;DB</span>
-                <div className="pl-4 sm:pl-1">
+                <span>
                   <span className="token-attr">className</span>=
                   <span className="token-string">&quot;db-users-name-where-id-1&quot;</span>
-                </div>
-                <span className="token-tag sm:pl-1">/&gt;</span>
+                </span>
+                <span className="token-tag">/&gt;</span>
               </div>
             </div>
             <div className="mt-4 text-center">
