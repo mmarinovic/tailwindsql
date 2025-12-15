@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#22d3ee"/>
+      <stop offset="50%" style="stop-color:#a855f7"/>
+      <stop offset="100%" style="stop-color:#ec4899"/>
+    </linearGradient>
+    <linearGradient id="shine" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:rgba(255,255,255,0.3)"/>
+      <stop offset="50%" style="stop-color:rgba(255,255,255,0.1)"/>
+      <stop offset="100%" style="stop-color:rgba(255,255,255,0)"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="256" cy="256" r="240" fill="#0f0f23"/>
+  
+  <!-- Database cylinder - top ellipse -->
+  <ellipse cx="256" cy="140" rx="140" ry="45" fill="url(#gradient)"/>
+  
+  <!-- Database cylinder - body -->
+  <path d="M116 140 L116 372 Q116 417 256 417 Q396 417 396 372 L396 140 Q396 185 256 185 Q116 185 116 140" fill="url(#gradient)"/>
+  
+  <!-- Middle line accent -->
+  <ellipse cx="256" cy="256" rx="140" ry="45" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="3"/>
+  
+  <!-- Bottom ellipse accent -->
+  <ellipse cx="256" cy="372" rx="140" ry="45" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="3"/>
+  
+  <!-- Top highlight -->
+  <ellipse cx="256" cy="140" rx="120" ry="35" fill="url(#shine)"/>
+  
+  <!-- SQL text -->
+  <text x="256" y="275" font-family="system-ui, -apple-system, sans-serif" font-size="72" font-weight="bold" fill="white" text-anchor="middle" letter-spacing="-2">SQL</text>
+</svg>
+
