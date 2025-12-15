@@ -36,18 +36,20 @@ export function Example({ title, description, className, as, children, codePrevi
         {/* Code block */}
         <div className="mb-3 sm:mb-4 overflow-x-auto rounded-lg bg-black/50 p-3 sm:p-4 font-mono text-xs sm:text-sm">
           {codePreview || (
-            <>
+            <div className="flex flex-col">
               <span className="text-pink-400">&lt;DB</span>
-              <span className="text-slate-300"> className=</span>
-              <span className="text-green-400">&quot;{className}&quot;</span>
+              <div className="pl-4">
+                <span className="text-slate-300">className=</span>
+                <span className="text-green-400">&quot;{className}&quot;</span>
+              </div>
               {as && (
-                <>
-                  <span className="text-slate-300"> as=</span>
+                <div className="pl-4">
+                  <span className="text-slate-300">as=</span>
                   <span className="text-green-400">&quot;{as}&quot;</span>
-                </>
+                </div>
               )}
-              <span className="text-pink-400"> /&gt;</span>
-            </>
+              <span className="text-pink-400">/&gt;</span>
+            </div>
           )}
         </div>
 
@@ -142,28 +144,36 @@ export function JoinExample() {
       className="db-users-name-limit-5"
       as="table"
       codePreview={
-        <div className="whitespace-pre-wrap break-words">
-          <div>
-            <span className="text-pink-400">&lt;DB</span>
-            <span className="text-slate-300"> className=</span>
+        <div className="flex flex-col">
+          <span className="text-pink-400">&lt;DB</span>
+          <div className="pl-4">
+            <span className="text-slate-300">className=</span>
             <span className="text-green-400">&quot;db-users-name-limit-5&quot;</span>
-            <span className="text-slate-300"> as=</span>
+          </div>
+          <div className="pl-4">
+            <span className="text-slate-300">as=</span>
             <span className="text-green-400">&quot;table&quot;</span>
-            <span className="text-pink-400">&gt;</span>
           </div>
-          <div className="ml-2 sm:ml-4">
+          <span className="text-pink-400">&gt;</span>
+          <div className="pl-4">
             <span className="text-purple-400">&lt;Join</span>
-            <span className="text-slate-300"> table=</span>
+          </div>
+          <div className="pl-8">
+            <span className="text-slate-300">table=</span>
             <span className="text-green-400">&quot;posts&quot;</span>
-            <span className="text-slate-300"> on=</span>
+          </div>
+          <div className="pl-8">
+            <span className="text-slate-300">on=</span>
             <span className="text-yellow-400">&quot;id-author_id&quot;</span>
-            <span className="text-slate-300"> select=</span>
+          </div>
+          <div className="pl-8">
+            <span className="text-slate-300">select=</span>
             <span className="text-green-400">&quot;title&quot;</span>
-            <span className="text-purple-400"> /&gt;</span>
           </div>
-          <div>
-            <span className="text-pink-400">&lt;/DB&gt;</span>
+          <div className="pl-4">
+            <span className="text-purple-400">/&gt;</span>
           </div>
+          <span className="text-pink-400">&lt;/DB&gt;</span>
         </div>
       }
     >
