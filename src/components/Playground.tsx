@@ -269,111 +269,123 @@ export function Playground() {
       <div className="space-y-3 sm:space-y-4">
         <div className="bg-black/50 border border-white/20 rounded-xl p-3 sm:p-4 font-mono text-xs sm:text-sm md:text-base overflow-x-auto">
           {/* DB Component */}
-          <div className="flex flex-wrap items-center gap-1">
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
             <span className="text-pink-400">&lt;DB</span>
             
             {/* className prop */}
-            <span className="text-cyan-400 ml-1 sm:ml-2">className</span>
-            <span className="text-white">=</span>
-            <span className="text-green-400">&quot;</span>
-            <input
-              type="text"
-              value={className}
-              onChange={(e) => setClassName(e.target.value)}
-              className="bg-transparent text-green-400 outline-none border-b border-green-400/30 focus:border-green-400 transition-colors min-w-[8ch] max-w-full flex-1"
-              placeholder="db-users-name"
-              style={{ width: `${Math.max(12, Math.min(className.length + 1, 30))}ch` }}
-            />
-            <span className="text-green-400">&quot;</span>
+            <span className="flex items-center gap-1">
+              <span className="text-cyan-400">className</span>
+              <span className="text-white">=</span>
+              <span className="text-green-400">&quot;</span>
+              <input
+                type="text"
+                value={className}
+                onChange={(e) => setClassName(e.target.value)}
+                className="bg-transparent text-green-400 outline-none border-b border-green-400/30 focus:border-green-400 transition-colors min-w-[8ch] max-w-full"
+                placeholder="db-users-name"
+                style={{ width: `${Math.max(12, Math.min(className.length + 1, 30))}ch` }}
+              />
+              <span className="text-green-400">&quot;</span>
+            </span>
             
             {/* as prop */}
-            <span className="text-cyan-400 ml-1 sm:ml-2">as</span>
-            <span className="text-white">=</span>
-            <span className="text-orange-400">&quot;</span>
-            <select
-              value={renderAs}
-              onChange={(e) => setRenderAs(e.target.value as AsOption)}
-              className="bg-transparent text-orange-400 outline-none border-b border-orange-400/30 focus:border-orange-400 cursor-pointer"
-            >
-              {AS_OPTIONS.map((opt) => (
-                <option key={opt} value={opt} className="bg-slate-900 text-orange-400">
-                  {opt}
-                </option>
-              ))}
-            </select>
-            <span className="text-orange-400">&quot;</span>
+            <span className="flex items-center gap-1">
+              <span className="text-cyan-400">as</span>
+              <span className="text-white">=</span>
+              <span className="text-orange-400">&quot;</span>
+              <select
+                value={renderAs}
+                onChange={(e) => setRenderAs(e.target.value as AsOption)}
+                className="bg-transparent text-orange-400 outline-none border-b border-orange-400/30 focus:border-orange-400 cursor-pointer"
+              >
+                {AS_OPTIONS.map((opt) => (
+                  <option key={opt} value={opt} className="bg-slate-900 text-orange-400">
+                    {opt}
+                  </option>
+                ))}
+              </select>
+              <span className="text-orange-400">&quot;</span>
+            </span>
             
-            <span className="text-pink-400 ml-1">{join.enabled ? '>' : '/>'}</span>
+            <span className="text-pink-400">{join.enabled ? '>' : '/>'}</span>
           </div>
           
           {/* Join Component (if enabled) */}
           {join.enabled && (
             <>
-              <div className="flex flex-wrap items-center gap-1 ml-2 sm:ml-4 mt-2">
+              <div className="flex flex-wrap items-center gap-x-2 gap-y-1 pl-4 mt-1">
                 <span className="text-purple-400">&lt;Join</span>
                 
                 {/* table prop */}
-                <span className="text-cyan-400 ml-1 sm:ml-2">table</span>
-                <span className="text-white">=</span>
-                <span className="text-green-400">&quot;</span>
-                <input
-                  type="text"
-                  value={join.table}
-                  onChange={(e) => setJoin(prev => ({ ...prev, table: e.target.value }))}
-                  className="bg-transparent text-green-400 outline-none border-b border-green-400/30 focus:border-green-400 transition-colors min-w-[5ch]"
-                  placeholder="posts"
-                  style={{ width: `${Math.max(5, Math.min(join.table.length + 1, 15))}ch` }}
-                />
-                <span className="text-green-400">&quot;</span>
+                <span className="flex items-center gap-1">
+                  <span className="text-cyan-400">table</span>
+                  <span className="text-white">=</span>
+                  <span className="text-green-400">&quot;</span>
+                  <input
+                    type="text"
+                    value={join.table}
+                    onChange={(e) => setJoin(prev => ({ ...prev, table: e.target.value }))}
+                    className="bg-transparent text-green-400 outline-none border-b border-green-400/30 focus:border-green-400 transition-colors min-w-[5ch]"
+                    placeholder="posts"
+                    style={{ width: `${Math.max(5, Math.min(join.table.length + 1, 15))}ch` }}
+                  />
+                  <span className="text-green-400">&quot;</span>
+                </span>
                 
                 {/* on prop */}
-                <span className="text-cyan-400 ml-1 sm:ml-2">on</span>
-                <span className="text-white">=</span>
-                <span className="text-yellow-400">&quot;</span>
-                <input
-                  type="text"
-                  value={join.on}
-                  onChange={(e) => setJoin(prev => ({ ...prev, on: e.target.value }))}
-                  className="bg-transparent text-yellow-400 outline-none border-b border-yellow-400/30 focus:border-yellow-400 transition-colors min-w-[8ch]"
-                  placeholder="id-author_id"
-                  style={{ width: `${Math.max(10, Math.min(join.on.length + 1, 20))}ch` }}
-                />
-                <span className="text-yellow-400">&quot;</span>
+                <span className="flex items-center gap-1">
+                  <span className="text-cyan-400">on</span>
+                  <span className="text-white">=</span>
+                  <span className="text-yellow-400">&quot;</span>
+                  <input
+                    type="text"
+                    value={join.on}
+                    onChange={(e) => setJoin(prev => ({ ...prev, on: e.target.value }))}
+                    className="bg-transparent text-yellow-400 outline-none border-b border-yellow-400/30 focus:border-yellow-400 transition-colors min-w-[8ch]"
+                    placeholder="id-author_id"
+                    style={{ width: `${Math.max(10, Math.min(join.on.length + 1, 20))}ch` }}
+                  />
+                  <span className="text-yellow-400">&quot;</span>
+                </span>
                 
                 {/* select prop */}
-                <span className="text-cyan-400 ml-1 sm:ml-2">select</span>
-                <span className="text-white">=</span>
-                <span className="text-green-400">&quot;</span>
-                <input
-                  type="text"
-                  value={join.select}
-                  onChange={(e) => setJoin(prev => ({ ...prev, select: e.target.value }))}
-                  className="bg-transparent text-green-400 outline-none border-b border-green-400/30 focus:border-green-400 transition-colors min-w-[5ch]"
-                  placeholder="title"
-                  style={{ width: `${Math.max(5, Math.min(join.select.length + 1, 15))}ch` }}
-                />
-                <span className="text-green-400">&quot;</span>
+                <span className="flex items-center gap-1">
+                  <span className="text-cyan-400">select</span>
+                  <span className="text-white">=</span>
+                  <span className="text-green-400">&quot;</span>
+                  <input
+                    type="text"
+                    value={join.select}
+                    onChange={(e) => setJoin(prev => ({ ...prev, select: e.target.value }))}
+                    className="bg-transparent text-green-400 outline-none border-b border-green-400/30 focus:border-green-400 transition-colors min-w-[5ch]"
+                    placeholder="title"
+                    style={{ width: `${Math.max(5, Math.min(join.select.length + 1, 15))}ch` }}
+                  />
+                  <span className="text-green-400">&quot;</span>
+                </span>
                 
                 {/* type prop */}
-                <span className="text-cyan-400 ml-1 sm:ml-2">type</span>
-                <span className="text-white">=</span>
-                <span className="text-orange-400">&quot;</span>
-                <select
-                  value={join.type}
-                  onChange={(e) => setJoin(prev => ({ ...prev, type: e.target.value as 'left' | 'inner' | 'right' }))}
-                  className="bg-transparent text-orange-400 outline-none border-b border-orange-400/30 focus:border-orange-400 cursor-pointer"
-                >
-                  {JOIN_TYPES.map((type) => (
-                    <option key={type} value={type} className="bg-slate-900 text-orange-400">
-                      {type}
-                    </option>
-                  ))}
-                </select>
-                <span className="text-orange-400">&quot;</span>
+                <span className="flex items-center gap-1">
+                  <span className="text-cyan-400">type</span>
+                  <span className="text-white">=</span>
+                  <span className="text-orange-400">&quot;</span>
+                  <select
+                    value={join.type}
+                    onChange={(e) => setJoin(prev => ({ ...prev, type: e.target.value as 'left' | 'inner' | 'right' }))}
+                    className="bg-transparent text-orange-400 outline-none border-b border-orange-400/30 focus:border-orange-400 cursor-pointer"
+                  >
+                    {JOIN_TYPES.map((type) => (
+                      <option key={type} value={type} className="bg-slate-900 text-orange-400">
+                        {type}
+                      </option>
+                    ))}
+                  </select>
+                  <span className="text-orange-400">&quot;</span>
+                </span>
                 
-                <span className="text-purple-400 ml-1">/&gt;</span>
+                <span className="text-purple-400">/&gt;</span>
               </div>
-              <div className="flex items-center gap-1 mt-2">
+              <div className="mt-1">
                 <span className="text-pink-400">&lt;/DB&gt;</span>
               </div>
             </>
