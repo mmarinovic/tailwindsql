@@ -148,11 +148,11 @@ export function Playground() {
               {JSON.stringify(paginatedResults, null, 2)}
             </pre>
             {totalPages > 1 && (
-              <div className="mt-4 flex items-center justify-center gap-2">
+              <div className="mt-4 flex flex-col sm:flex-row items-center justify-center gap-2">
                 <button
                   onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
                   disabled={currentPage === 1}
-                  className="px-3 py-1.5 rounded-lg text-xs font-medium transition-all bg-white/5 text-slate-400 border border-white/10 hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-3 py-1.5 rounded-lg text-xs font-medium transition-all bg-white/5 text-slate-400 border border-white/10 hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
                 >
                   ← Prev
                 </button>
@@ -162,7 +162,7 @@ export function Playground() {
                 <button
                   onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
                   disabled={currentPage === totalPages}
-                  className="px-3 py-1.5 rounded-lg text-xs font-medium transition-all bg-white/5 text-slate-400 border border-white/10 hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-3 py-1.5 rounded-lg text-xs font-medium transition-all bg-white/5 text-slate-400 border border-white/10 hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
                 >
                   Next →
                 </button>
@@ -185,11 +185,11 @@ export function Playground() {
               ))}
             </ul>
             {totalPages > 1 && (
-              <div className="mt-4 flex items-center justify-center gap-2">
+              <div className="mt-4 flex flex-col sm:flex-row items-center justify-center gap-2">
                 <button
                   onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
                   disabled={currentPage === 1}
-                  className="px-3 py-1.5 rounded-lg text-xs font-medium transition-all bg-white/5 text-slate-400 border border-white/10 hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-3 py-1.5 rounded-lg text-xs font-medium transition-all bg-white/5 text-slate-400 border border-white/10 hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
                 >
                   ← Prev
                 </button>
@@ -199,7 +199,7 @@ export function Playground() {
                 <button
                   onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
                   disabled={currentPage === totalPages}
-                  className="px-3 py-1.5 rounded-lg text-xs font-medium transition-all bg-white/5 text-slate-400 border border-white/10 hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-3 py-1.5 rounded-lg text-xs font-medium transition-all bg-white/5 text-slate-400 border border-white/10 hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
                 >
                   Next →
                 </button>
@@ -212,12 +212,12 @@ export function Playground() {
       default:
         return (
           <>
-            <div className="overflow-x-auto">
-              <table className="w-full border-collapse text-sm">
+            <div className="overflow-x-auto -mx-3 sm:mx-0">
+              <table className="w-full border-collapse text-xs sm:text-sm min-w-[500px]">
                 <thead>
                   <tr className="bg-white/5">
                     {headers.map((h) => (
-                      <th key={h} className="border border-white/10 px-3 py-2 text-left font-semibold text-cyan-400">
+                      <th key={h} className="border border-white/10 px-2 sm:px-3 py-1.5 sm:py-2 text-left font-semibold text-cyan-400 whitespace-nowrap">
                         {h}
                       </th>
                     ))}
@@ -227,7 +227,7 @@ export function Playground() {
                   {paginatedResults.map((row, i) => (
                     <tr key={startIndex + i} className="hover:bg-white/5 transition-colors">
                       {headers.map((h) => (
-                        <td key={h} className="border border-white/10 px-3 py-2 text-slate-300">
+                        <td key={h} className="border border-white/10 px-2 sm:px-3 py-1.5 sm:py-2 text-slate-300 break-words max-w-[200px] sm:max-w-none">
                           {String(row[h] ?? '')}
                         </td>
                       ))}
@@ -237,21 +237,22 @@ export function Playground() {
               </table>
             </div>
             {totalPages > 1 && (
-              <div className="mt-4 flex items-center justify-center gap-2">
+              <div className="mt-4 flex flex-col sm:flex-row items-center justify-center gap-2">
                 <button
                   onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
                   disabled={currentPage === 1}
-                  className="px-3 py-1.5 rounded-lg text-xs font-medium transition-all bg-white/5 text-slate-400 border border-white/10 hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-3 py-1.5 rounded-lg text-xs font-medium transition-all bg-white/5 text-slate-400 border border-white/10 hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
                 >
                   ← Prev
                 </button>
-                <span className="text-xs text-slate-500">
-                  Page {currentPage} of {totalPages} ({startIndex + 1}-{Math.min(endIndex, totalItems)} of {totalItems})
+                <span className="text-xs text-slate-500 text-center">
+                  Page {currentPage} of {totalPages}
+                  <span className="hidden sm:inline"> ({startIndex + 1}-{Math.min(endIndex, totalItems)} of {totalItems})</span>
                 </span>
                 <button
                   onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
                   disabled={currentPage === totalPages}
-                  className="px-3 py-1.5 rounded-lg text-xs font-medium transition-all bg-white/5 text-slate-400 border border-white/10 hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-3 py-1.5 rounded-lg text-xs font-medium transition-all bg-white/5 text-slate-400 border border-white/10 hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
                 >
                   Next →
                 </button>
@@ -263,30 +264,30 @@ export function Playground() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Component Input - looks like JSX */}
-      <div className="space-y-4">
-        <div className="bg-black/50 border border-white/20 rounded-xl p-4 font-mono text-sm md:text-base overflow-x-auto">
+      <div className="space-y-3 sm:space-y-4">
+        <div className="bg-black/50 border border-white/20 rounded-xl p-3 sm:p-4 font-mono text-xs sm:text-sm md:text-base overflow-x-auto">
           {/* DB Component */}
           <div className="flex flex-wrap items-center gap-1">
             <span className="text-pink-400">&lt;DB</span>
             
             {/* className prop */}
-            <span className="text-cyan-400 ml-2">className</span>
+            <span className="text-cyan-400 ml-1 sm:ml-2">className</span>
             <span className="text-white">=</span>
             <span className="text-green-400">&quot;</span>
             <input
               type="text"
               value={className}
               onChange={(e) => setClassName(e.target.value)}
-              className="bg-transparent text-green-400 outline-none border-b border-green-400/30 focus:border-green-400 transition-colors"
+              className="bg-transparent text-green-400 outline-none border-b border-green-400/30 focus:border-green-400 transition-colors min-w-[8ch] max-w-full flex-1"
               placeholder="db-users-name"
-              style={{ width: `${Math.max(12, className.length + 1)}ch` }}
+              style={{ width: `${Math.max(12, Math.min(className.length + 1, 30))}ch` }}
             />
             <span className="text-green-400">&quot;</span>
             
             {/* as prop */}
-            <span className="text-cyan-400 ml-2">as</span>
+            <span className="text-cyan-400 ml-1 sm:ml-2">as</span>
             <span className="text-white">=</span>
             <span className="text-orange-400">&quot;</span>
             <select
@@ -308,53 +309,53 @@ export function Playground() {
           {/* Join Component (if enabled) */}
           {join.enabled && (
             <>
-              <div className="flex flex-wrap items-center gap-1 ml-4 mt-2">
+              <div className="flex flex-wrap items-center gap-1 ml-2 sm:ml-4 mt-2">
                 <span className="text-purple-400">&lt;Join</span>
                 
                 {/* table prop */}
-                <span className="text-cyan-400 ml-2">table</span>
+                <span className="text-cyan-400 ml-1 sm:ml-2">table</span>
                 <span className="text-white">=</span>
                 <span className="text-green-400">&quot;</span>
                 <input
                   type="text"
                   value={join.table}
                   onChange={(e) => setJoin(prev => ({ ...prev, table: e.target.value }))}
-                  className="bg-transparent text-green-400 outline-none border-b border-green-400/30 focus:border-green-400 transition-colors"
+                  className="bg-transparent text-green-400 outline-none border-b border-green-400/30 focus:border-green-400 transition-colors min-w-[5ch]"
                   placeholder="posts"
-                  style={{ width: `${Math.max(5, join.table.length + 1)}ch` }}
+                  style={{ width: `${Math.max(5, Math.min(join.table.length + 1, 15))}ch` }}
                 />
                 <span className="text-green-400">&quot;</span>
                 
                 {/* on prop */}
-                <span className="text-cyan-400 ml-2">on</span>
+                <span className="text-cyan-400 ml-1 sm:ml-2">on</span>
                 <span className="text-white">=</span>
                 <span className="text-yellow-400">&quot;</span>
                 <input
                   type="text"
                   value={join.on}
                   onChange={(e) => setJoin(prev => ({ ...prev, on: e.target.value }))}
-                  className="bg-transparent text-yellow-400 outline-none border-b border-yellow-400/30 focus:border-yellow-400 transition-colors"
+                  className="bg-transparent text-yellow-400 outline-none border-b border-yellow-400/30 focus:border-yellow-400 transition-colors min-w-[8ch]"
                   placeholder="id-author_id"
-                  style={{ width: `${Math.max(10, join.on.length + 1)}ch` }}
+                  style={{ width: `${Math.max(10, Math.min(join.on.length + 1, 20))}ch` }}
                 />
                 <span className="text-yellow-400">&quot;</span>
                 
                 {/* select prop */}
-                <span className="text-cyan-400 ml-2">select</span>
+                <span className="text-cyan-400 ml-1 sm:ml-2">select</span>
                 <span className="text-white">=</span>
                 <span className="text-green-400">&quot;</span>
                 <input
                   type="text"
                   value={join.select}
                   onChange={(e) => setJoin(prev => ({ ...prev, select: e.target.value }))}
-                  className="bg-transparent text-green-400 outline-none border-b border-green-400/30 focus:border-green-400 transition-colors"
+                  className="bg-transparent text-green-400 outline-none border-b border-green-400/30 focus:border-green-400 transition-colors min-w-[5ch]"
                   placeholder="title"
-                  style={{ width: `${Math.max(5, join.select.length + 1)}ch` }}
+                  style={{ width: `${Math.max(5, Math.min(join.select.length + 1, 15))}ch` }}
                 />
                 <span className="text-green-400">&quot;</span>
                 
                 {/* type prop */}
-                <span className="text-cyan-400 ml-2">type</span>
+                <span className="text-cyan-400 ml-1 sm:ml-2">type</span>
                 <span className="text-white">=</span>
                 <span className="text-orange-400">&quot;</span>
                 <select
@@ -380,10 +381,10 @@ export function Playground() {
         </div>
 
         {/* Join Toggle & Quick Examples */}
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
           <button
             onClick={() => setJoin(prev => ({ ...prev, enabled: !prev.enabled }))}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-2 ${
+            className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 sm:gap-2 whitespace-nowrap ${
               join.enabled
                 ? 'bg-purple-500/20 text-purple-400 border border-purple-500/30'
                 : 'bg-white/5 text-slate-400 border border-white/10 hover:bg-white/10'
@@ -393,32 +394,34 @@ export function Playground() {
             <span>Join</span>
           </button>
           
-          <div className="h-4 w-px bg-white/10" />
+          <div className="hidden sm:block h-4 w-px bg-white/10" />
           
-          <span className="text-xs text-slate-500 uppercase tracking-wide">Try:</span>
-          {EXAMPLE_QUERIES.map((example) => (
-            <button
-              key={example.label}
-              onClick={() => applyExample(example)}
-              className={`px-3 py-1 rounded-full text-xs font-mono transition-all ${
-                className === example.value && (example.join ? join.enabled : !join.enabled)
-                  ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/30'
-                  : 'bg-white/5 text-slate-400 border border-white/10 hover:bg-white/10 hover:text-slate-300'
-              }`}
-            >
-              {example.label}
-            </button>
-          ))}
+          <span className="text-xs text-slate-500 uppercase tracking-wide hidden sm:inline">Try:</span>
+          <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+            {EXAMPLE_QUERIES.map((example) => (
+              <button
+                key={example.label}
+                onClick={() => applyExample(example)}
+                className={`px-2 sm:px-3 py-1 rounded-full text-xs font-mono transition-all whitespace-nowrap ${
+                  className === example.value && (example.join ? join.enabled : !join.enabled)
+                    ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/30'
+                    : 'bg-white/5 text-slate-400 border border-white/10 hover:bg-white/10 hover:text-slate-300'
+                }`}
+              >
+                {example.label}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
       {/* Generated SQL */}
       {result?.query && (
-        <div className="bg-black/40 rounded-lg p-4 font-mono text-sm">
+        <div className="bg-black/40 rounded-lg p-3 sm:p-4 font-mono text-xs sm:text-sm">
           <div className="text-xs text-slate-500 uppercase tracking-wide mb-2">Generated SQL:</div>
-          <code className="text-purple-400 break-all">{result.query}</code>
+          <code className="text-purple-400 break-all whitespace-pre-wrap">{result.query}</code>
           {result.params && result.params.length > 0 && (
-            <span className="text-slate-500 ml-2">
+            <span className="text-slate-500 ml-1 sm:ml-2 block sm:inline mt-1 sm:mt-0">
               [{result.params.join(', ')}]
             </span>
           )}
@@ -427,10 +430,10 @@ export function Playground() {
 
       {/* Result count */}
       {result?.count !== undefined && !result.error && (
-        <div className="text-xs text-slate-500">
+        <div className="text-xs text-slate-500 px-1">
           {result.count} result{result.count !== 1 ? 's' : ''}
           {result.count > ITEMS_PER_PAGE && (
-            <span className="ml-2">
+            <span className="ml-1 sm:ml-2">
               (showing {ITEMS_PER_PAGE} per page)
             </span>
           )}
@@ -438,7 +441,7 @@ export function Playground() {
       )}
 
       {/* Results */}
-      <div className={`min-h-[200px] rounded-xl border border-white/10 bg-white/5 p-4 ${loading ? 'opacity-50' : ''}`}>
+      <div className={`min-h-[200px] rounded-xl border border-white/10 bg-white/5 p-3 sm:p-4 ${loading ? 'opacity-50' : ''}`}>
         {loading ? (
           <div className="flex items-center justify-center h-32">
             <div className="animate-spin rounded-full h-8 w-8 border-2 border-cyan-500 border-t-transparent" />

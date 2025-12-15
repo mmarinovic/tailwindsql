@@ -21,6 +21,9 @@ body {
   background: var(--bg-primary);
   color: var(--text-primary);
   font-family: 'Space Grotesk', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 
 /* Animated gradient background */
@@ -68,6 +71,19 @@ body {
   padding: 1rem;
 }
 
+.code-block pre {
+  overflow-x: auto;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+}
+
+@media (max-width: 640px) {
+  .code-block {
+    padding: 0.75rem;
+    border-radius: 8px;
+  }
+}
+
 /* Syntax highlighting colors */
 .token-tag { color: #f472b6; }
 .token-attr { color: #22d3ee; }
@@ -101,6 +117,14 @@ body {
   font-size: 0.75rem;
   font-weight: 600;
   font-family: 'JetBrains Mono', monospace;
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  .badge {
+    font-size: 0.7rem;
+    padding: 0.2rem 0.6rem;
+  }
 }
 
 .badge-cyan { background: rgba(34, 211, 238, 0.15); color: #22d3ee; border: 1px solid rgba(34, 211, 238, 0.3); }
