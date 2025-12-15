@@ -153,7 +153,7 @@ function renderResults(
       case 'json':
       case 'code':
         return (
-          <code className="font-mono text-sm bg-black/40 text-green-400 p-2 rounded block" style={style}>
+          <code className="font-mono text-xs sm:text-sm bg-black/40 text-green-400 p-2 sm:p-3 rounded block overflow-x-auto" style={style}>
             {JSON.stringify(values, null, 2)}
           </code>
         );
@@ -171,34 +171,36 @@ function renderResults(
     case 'table':
       const headers = columns.length > 0 ? columns : Object.keys(results[0]);
       return (
-        <table className="border-collapse border border-white/10 text-sm w-full" style={style}>
-          <thead>
-            <tr className="bg-white/5">
-              {headers.map((h) => (
-                <th key={h} className="border border-white/10 px-3 py-2 text-left font-semibold text-cyan-400">
-                  {h}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {results.map((row, i) => (
-              <tr key={i} className="hover:bg-white/5 transition-colors">
+        <div className="overflow-x-auto -mx-2 sm:mx-0">
+          <table className="border-collapse border border-white/10 text-xs sm:text-sm w-full min-w-[400px]" style={style}>
+            <thead>
+              <tr className="bg-white/5">
                 {headers.map((h) => (
-                  <td key={h} className="border border-white/10 px-3 py-2 text-slate-300">
-                    {String(row[h] ?? '')}
-                  </td>
+                  <th key={h} className="border border-white/10 px-2 sm:px-3 py-1.5 sm:py-2 text-left font-semibold text-cyan-400 whitespace-nowrap">
+                    {h}
+                  </th>
                 ))}
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {results.map((row, i) => (
+                <tr key={i} className="hover:bg-white/5 transition-colors">
+                  {headers.map((h) => (
+                    <td key={h} className="border border-white/10 px-2 sm:px-3 py-1.5 sm:py-2 text-slate-300 break-words max-w-[150px] sm:max-w-none">
+                      {String(row[h] ?? '')}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       );
 
     case 'json':
     case 'code':
       return (
-        <code className="font-mono text-sm bg-black/40 text-green-400 p-2 rounded block whitespace-pre" style={style}>
+        <code className="font-mono text-xs sm:text-sm bg-black/40 text-green-400 p-2 sm:p-3 rounded block whitespace-pre overflow-x-auto" style={style}>
           {JSON.stringify(results, null, 2)}
         </code>
       );

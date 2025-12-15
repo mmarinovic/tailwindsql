@@ -20,21 +20,21 @@ interface ExampleProps {
 
 export function Example({ title, description, className, as, children, codePreview }: ExampleProps) {
   return (
-    <div className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-900 to-slate-800 p-6 shadow-xl transition-all duration-300 hover:shadow-2xl hover:shadow-cyan-500/10">
+    <div className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-900 to-slate-800 p-4 sm:p-6 shadow-xl transition-all duration-300 hover:shadow-2xl hover:shadow-cyan-500/10">
       {/* Glow effect */}
       <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 via-purple-500/10 to-pink-500/10 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
       
       <div className="relative z-10">
         {/* Header */}
-        <div className="mb-4">
-          <h3 className="text-lg font-semibold text-white">{title}</h3>
+        <div className="mb-3 sm:mb-4">
+          <h3 className="text-base sm:text-lg font-semibold text-white">{title}</h3>
           {description && (
-            <p className="mt-1 text-sm text-slate-400">{description}</p>
+            <p className="mt-1 text-xs sm:text-sm text-slate-400">{description}</p>
           )}
         </div>
 
         {/* Code block */}
-        <div className="mb-4 overflow-x-auto rounded-lg bg-black/50 p-4 font-mono text-sm">
+        <div className="mb-3 sm:mb-4 overflow-x-auto rounded-lg bg-black/50 p-3 sm:p-4 font-mono text-xs sm:text-sm">
           {codePreview || (
             <>
               <span className="text-pink-400">&lt;DB</span>
@@ -52,11 +52,11 @@ export function Example({ title, description, className, as, children, codePrevi
         </div>
 
         {/* Result */}
-        <div className="rounded-lg border border-cyan-500/20 bg-cyan-500/5 p-4">
+        <div className="rounded-lg border border-cyan-500/20 bg-cyan-500/5 p-3 sm:p-4 overflow-x-auto">
           <div className="mb-2 text-xs font-medium uppercase tracking-wider text-cyan-400">
             Output
           </div>
-          <div className="text-white">
+          <div className="text-white text-sm sm:text-base">
             <DB className={className} as={as}>
               {children}
             </DB>
@@ -142,7 +142,7 @@ export function JoinExample() {
       className="db-users-name-limit-5"
       as="table"
       codePreview={
-        <div>
+        <div className="whitespace-pre-wrap break-words">
           <div>
             <span className="text-pink-400">&lt;DB</span>
             <span className="text-slate-300"> className=</span>
@@ -151,7 +151,7 @@ export function JoinExample() {
             <span className="text-green-400">&quot;table&quot;</span>
             <span className="text-pink-400">&gt;</span>
           </div>
-          <div className="ml-4">
+          <div className="ml-2 sm:ml-4">
             <span className="text-purple-400">&lt;Join</span>
             <span className="text-slate-300"> table=</span>
             <span className="text-green-400">&quot;posts&quot;</span>
