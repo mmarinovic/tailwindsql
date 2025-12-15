@@ -269,11 +269,11 @@ export function Playground() {
       <div className="space-y-3 sm:space-y-4">
         <div className="bg-black/50 border border-white/20 rounded-xl p-3 sm:p-4 font-mono text-xs sm:text-sm md:text-base overflow-x-auto">
           {/* DB Component */}
-          <div className="flex flex-col">
+          <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-2">
             <span className="text-pink-400">&lt;DB</span>
             
             {/* className prop */}
-            <div className="flex items-center gap-1 pl-4">
+            <div className="flex items-center gap-1 pl-4 sm:pl-0">
               <span className="text-cyan-400">className</span>
               <span className="text-white">=</span>
               <span className="text-green-400">&quot;</span>
@@ -289,7 +289,7 @@ export function Playground() {
             </div>
             
             {/* as prop */}
-            <div className="flex items-center gap-1 pl-4">
+            <div className="flex items-center gap-1 pl-4 sm:pl-0">
               <span className="text-cyan-400">as</span>
               <span className="text-white">=</span>
               <span className="text-orange-400">&quot;</span>
@@ -313,11 +313,11 @@ export function Playground() {
           {/* Join Component (if enabled) */}
           {join.enabled && (
             <>
-              <div className="flex flex-col pl-4 mt-1">
+              <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-2 pl-4 mt-1">
                 <span className="text-purple-400">&lt;Join</span>
                 
                 {/* table prop */}
-                <div className="flex items-center gap-1 pl-4">
+                <div className="flex items-center gap-1 pl-4 sm:pl-0">
                   <span className="text-cyan-400">table</span>
                   <span className="text-white">=</span>
                   <span className="text-green-400">&quot;</span>
@@ -333,7 +333,7 @@ export function Playground() {
                 </div>
                 
                 {/* on prop */}
-                <div className="flex items-center gap-1 pl-4">
+                <div className="flex items-center gap-1 pl-4 sm:pl-0">
                   <span className="text-cyan-400">on</span>
                   <span className="text-white">=</span>
                   <span className="text-yellow-400">&quot;</span>
@@ -349,7 +349,7 @@ export function Playground() {
                 </div>
                 
                 {/* select prop */}
-                <div className="flex items-center gap-1 pl-4">
+                <div className="flex items-center gap-1 pl-4 sm:pl-0">
                   <span className="text-cyan-400">select</span>
                   <span className="text-white">=</span>
                   <span className="text-green-400">&quot;</span>
@@ -365,7 +365,7 @@ export function Playground() {
                 </div>
                 
                 {/* type prop */}
-                <div className="flex items-center gap-1 pl-4">
+                <div className="flex items-center gap-1 pl-4 sm:pl-0">
                   <span className="text-cyan-400">type</span>
                   <span className="text-white">=</span>
                   <span className="text-orange-400">&quot;</span>
