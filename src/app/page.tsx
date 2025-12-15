@@ -33,8 +33,8 @@ export default function Home() {
 
           {/* Hero Example */}
           <div className="glow-card p-4 sm:p-6 md:p-8 max-w-2xl mx-auto text-left">
-            <div className="code-block text-sm sm:text-base md:text-lg overflow-x-auto">
-              <pre className="whitespace-pre-wrap break-words">
+            <div className="code-block text-xs sm:text-sm md:text-base overflow-x-auto">
+              <pre className="whitespace-nowrap">
                 <span className="token-tag">&lt;DB</span>
                 <span className="token-attr"> className</span>=
                 <span className="token-string">&quot;db-users-name-where-id-1&quot;</span>
