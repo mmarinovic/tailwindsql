@@ -1,3 +1,5 @@
+# TL;DR: Do whatever you want with it (except deploy to production 😅)
+
 # TailwindSQL 🎨
 
 > Like TailwindCSS, but for SQL queries in React Server Components.
