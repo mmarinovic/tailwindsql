@@ -74,6 +74,7 @@ export function Playground() {
       const response = await fetch(url);
       const data = await response.json();
       setResult(data);
+      setCurrentPage(1);
     } catch (error) {
       setResult({ error: error instanceof Error ? error.message : 'Failed to fetch data' });
     } finally {
@@ -91,11 +92,6 @@ export function Playground() {
 
     return () => clearTimeout(timer);
   }, [className, join, fetchData]);
-
-  // Reset to page 1 when results change
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [result?.results]);
 
   const applyExample = (example: typeof EXAMPLE_QUERIES[0]) => {
     setClassName(example.value);

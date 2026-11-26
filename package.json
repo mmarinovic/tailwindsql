@@ -8,25 +8,29 @@
     "build": "npm run seed:check && next build",
     "start": "next start",
     "seed": "tsx src/seed.ts",
-    "seed:check": "node scripts/check-db.js"
+    "seed:check": "node scripts/check-db.js",
+    "lint": "oxlint --deny-warnings"
   },
   "dependencies": {
-    "better-sqlite3": "^11.6.0",
-    "next": "^14.2.18",
+    "better-sqlite3": "^13.2.0",
+    "next": "^14.2.35",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
-    "@types/better-sqlite3": "^7.6.11",
-    "@types/node": "^22.10.1",
-    "@types/react": "^18.3.12",
-    "@types/react-dom": "^18.3.1",
-    "autoprefixer": "^10.4.20",
-    "postcss": "^8.4.49",
-    "tailwindcss": "^3.4.16",
-    "tsx": "^4.19.2",
-    "typescript": "^5.7.2"
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/node": "^22.20.7",
+    "@types/react": "^18.3.32",
+    "@types/react-dom": "^18.3.7",
+    "autoprefixer": "^10.7.0",
+    "oxlint": "^1.95.0",
+    "postcss": "^8.5.33",
+    "tailwindcss": "^3.4.19",
+    "tsx": "^4.23.15",
+    "typescript": "^5.9.3"
+  },
+  "allowScripts": {
+    "better-sqlite3@13.2.0": true,
+    "esbuild@0.28.2": true
   }
 }
-
-
