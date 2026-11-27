@@ -6,7 +6,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { parseClassNames, JoinConfig } from '@/lib/parser';
+import { parseClassNames } from '@/lib/parser';
 import { buildQuery } from '@/lib/query-builder';
 import db from '@/lib/db';
 
